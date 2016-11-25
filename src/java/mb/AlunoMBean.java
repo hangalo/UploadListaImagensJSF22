@@ -10,7 +10,7 @@ import facade.AlunoFacade;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
+
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.Part;
@@ -26,24 +27,22 @@ import org.apache.commons.io.IOUtils;
 
 /**
  *
- * @author informatica
+ * @author praveen
  */
-@Named(value = "alunoMB")
+@Named(value = "alunoMBean")
 @SessionScoped
-public class AlunoMB implements Serializable {
+public class AlunoMBean implements Serializable {
 
     /**
-     * Creates a new instance of AlunoMB
+     * Creates a new instance of AlunoMBean
      */
-    // private Part foto;
     private Part foto;
     private Aluno aluno = new Aluno();
     private List<Aluno> alunos = new ArrayList<>();
-
     @Inject
     AlunoFacade alunoFacade;
 
-    public AlunoMB() {
+    public AlunoMBean() {
     }
 
     public Part getFoto() {
