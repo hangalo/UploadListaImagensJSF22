@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:panel header="Registar Aluno">
+            
+            <f:view>
+
+
+                <h:form>
+                    <h1><h:outputText value="Create/Edit"/></h1>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="IdAluno:" for="idAluno" />
+                        <h:inputText id="idAluno" value="#{alunoMB.aluno.idAluno}" title="IdAluno" required="true" requiredMessage="The IdAluno field is required."/>
+                        <h:outputLabel value="NomeAluno:" for="nomeAluno" />
+                        <h:inputText id="nomeAluno" value="#{alunoMB.aluno.nomeAluno}" title="NomeAluno" />
+                        <h:outputLabel value="SobrenomeAluno:" for="sobrenomeAluno" />
+                        <h:inputText id="sobrenomeAluno" value="#{alunoMB.aluno.sobrenomeAluno}" title="SobrenomeAluno" />
+                        <h:outputLabel value="FotoAluno:" for="fotoAluno" />
+                        <h:inputText id="fotoAluno" value="#{alunoMB.aluno.fotoAluno}" title="FotoAluno" />
+                        <h:outputLabel value="ConteudoFoto:" for="conteudoFoto" />
+                        <h:inputTextarea rows="4" cols="30" id="conteudoFoto" value="#{alunoMB.aluno.conteudoFoto}" title="ConteudoFoto" />
+                    </h:panelGrid>
+                </h:form>
+            </f:view>
+
+            
+        </p:panel>
+    </h:body>
+</html>
+
