@@ -16,16 +16,14 @@
                 <h:form>
                     <h1><h:outputText value="Registar Aluno"/></h1>
                     <h:panelGrid columns="2">
-                        <h:outputLabel value="IdAluno:" for="idAluno" />
-                        <h:inputText id="idAluno" value="#{alunoMB.aluno.idAluno}" title="IdAluno" required="true" requiredMessage="The IdAluno field is required."/>
-                        <h:outputLabel value="NomeAluno:" for="nomeAluno" />
-                        <h:inputText id="nomeAluno" value="#{alunoMB.aluno.nomeAluno}" title="NomeAluno" />
-                        <h:outputLabel value="SobrenomeAluno:" for="sobrenomeAluno" />
-                        <h:inputText id="sobrenomeAluno" value="#{alunoMB.aluno.sobrenomeAluno}" title="SobrenomeAluno" />
-                        <h:outputLabel value="FotoAluno:" for="fotoAluno" />
-                        <h:inputText id="fotoAluno" value="#{alunoMB.aluno.fotoAluno}" title="FotoAluno" />
-                        <h:outputLabel value="ConteudoFoto:" for="conteudoFoto" />
-                        <h:inputTextarea rows="4" cols="30" id="conteudoFoto" value="#{alunoMB.aluno.conteudoFoto}" title="ConteudoFoto" />
+                       
+                        <h:outputLabel value="Nome:" for="nome" />
+                        <h:inputText id="nome" value="#{alunoMBean.aluno.nomeAluno}" title="Nome" />
+                        <h:outputLabel value="Sobrenome:" for="sobrenome" />
+                        <h:inputText id="sobrenomeAluno" value="#{alunoMBean.aluno.sobrenomeAluno}" title="SobrenomeAluno" />
+                        <h:outputLabel value="Foto:" for="foto" />
+                        <h:inputFile id="foto" value="#{alunoMBean.foto}" title="Foto" />
+                        
                     </h:panelGrid>
                 </h:form>
             </f:view>
