@@ -38,6 +38,7 @@ public class AlunoMBean implements Serializable {
     private Aluno aluno = new Aluno();
     private List<Aluno> alunos = new ArrayList<>();
     private boolean carregado;
+    private boolean uploaded;
     @EJB
     AlunoFacade alunoFacade;
 
@@ -132,6 +133,45 @@ public class AlunoMBean implements Serializable {
 
     }
 
+    public void doUpload() {
+        try {
+
+            String separador = System.getProperty("file.separator");
+            String caminhoAbsoluto = "D:" + separador + "fotos_alunos" + separador + foto.getSubmittedFileName();
+         
+            InputStream in = foto.getInputStream();
+            File f = new File(caminhoAbsoluto + foto.getSubmittedFileName());
+        
+            f.createNewFile();
+            FileOutputStream out = new FileOutputStream(f);
+          //  byte[] buffer = new byte[1024];
+             byte[] buffer = new byte[1024*1024*100];
+
+           
+            int length;
+
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+            out.close();
+            in.close();
+            aluno.setFotoAluno(foto.getSubmittedFileName());
+            byte[] content = IOUtils.toByteArray(foto.getInputStream());
+            aluno.setConteudoFoto(content);
+
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
+            uploaded = true;
+
+            FacesMessage msg = new FacesMessage("Ficheito", "\t\t" + f.getName() + "\t" + "\t" + "Carregado com sucesso");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+
+        } catch (IOException ex) {
+            ex.printStackTrace(System.out);
+        }
+
+    }
+
+    
     public void salvar() {
         alunoFacade.create(aluno);
         aluno = new Aluno();
