@@ -13,17 +13,21 @@
             <f:view>
 
 
-                <h:form>
+                <h:form enctype="multipart/form-data">
+                    <h:messages showDetail="true" id="carregamento"/>
                     <h1><h:outputText value="Registar Aluno"/></h1>
                     <h:panelGrid columns="2">
                        
                         <h:outputLabel value="Nome:" for="nome" />
                         <h:inputText id="nome" value="#{alunoMBean.aluno.nomeAluno}" title="Nome" />
                         <h:outputLabel value="Sobrenome:" for="sobrenome" />
-                        <h:inputText id="sobrenomeAluno" value="#{alunoMBean.aluno.sobrenomeAluno}" title="SobrenomeAluno" />
+                        <h:inputText id="sobrenome" value="#{alunoMBean.aluno.sobrenomeAluno}" title="SobrenomeAluno" />
                         <h:outputLabel value="Foto:" for="foto" />
                         <h:inputFile id="foto" value="#{alunoMBean.foto}" title="Foto" />
-                        
+                        <h:panelGroup/>
+                        <h:commandButton value="Upload" actionListener="#{alunoMBean.upload()}"/>
+                        <h:panelGroup/>
+                        <h:commandButton value="Guardar" actionListener="#{alunoMBean.salvar}"/>
                     </h:panelGrid>
                 </h:form>
             </f:view>
