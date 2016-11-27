@@ -61,93 +61,17 @@ public class AlunoMBean implements Serializable {
         this.aluno = aluno;
     }
 
-    public void upload() {
-        try {
-
-            /*Definicao do path externo equivalente a 
-             1 - "C:\\fotos\\" -> no Windows;
-             2 - /fotos 
-             ou ainda /Users/fotos -> No Mac OS
-             3 - /usr/fotos - > no Linux           
-            
-             Pode-se também buscar a basta do utilizador mendiante
-             capturando o valor user.dir da propriedade do sistema fazendo:
-            
-             String pastaUtilizador = System.getProperty("user.dir");
-            
-             */
-            //Este definicao torna o sistema independente da pataforma 
-            //em termos de nomeclatura par ao path
-            //       String separador = System.getProperty("file.separator");
-            //    String caminhoAbsoluto = "C:" + separador + "fotos_alunos" + separador + foto.getSubmittedFileName();
-            //   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>" + caminhoAbsoluto);
-
-            /*Crea um objecto do tipo InputStream chamado entrada.
-             O metodo getInputStream da Interface Part retorna o conteudo 
-             de um ojecto do tipo Part
-             */
-            InputStream entrada = foto.getInputStream();
-
-            //    File ficheiro = new File(caminhoAbsoluto + foto.getSubmittedFileName());
-            File ficheiro = new File("D:\\fotos_alunos\\" + foto.getSubmittedFileName());
-            /*
-             Equivante a escrever
-                  
-             //  File ficheiro = new File("C:\\fotos\\"+foto.getSubmittedFileName());
-             */
-            //Se a pasta nao existe a cria
-            if (!ficheiro.exists()) {
-
-                ficheiro.mkdir();
-            }
-            /* o metodo createNewFile, cria um novo arquivo vazio nomeado por este 
-             caminho abstrato se e somente se um arquivo com esse nome ainda não existe.*/
-            ficheiro.createNewFile();
-
-            FileOutputStream saida = new FileOutputStream(ficheiro);
-
-            byte[] buffer = new byte[1024 * 1024 * 100];
-            int length;
-
-            while ((length = entrada.read(buffer)) > 0) {
-                saida.write(buffer, 0, length);
-
-            }
-            saida.close();
-            entrada.close();
-            // nome do ficheiro a guardar na tabela da base de dados
-            aluno.setFotoAluno(foto.getSubmittedFileName());
-
-            // conteudo o ficheiro a ser guardado na tabela da base de dados -> nao e visto como boa pratica
-            byte[] conteudo = IOUtils.toByteArray(foto.getInputStream());
-            aluno.setConteudoFoto(conteudo);
-
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", ficheiro.getAbsolutePath());
-
-            FacesMessage msg = new FacesMessage("Ficheito", "" + ficheiro.getName() + "" + "" + "Carregado com sucesso");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-
-        } catch (IOException ioex) {
-            ioex.printStackTrace(System.out);
-        }
-
-    }
-
     public void doUpload() {
         try {
 
-            String separador = System.getProperty("file.separator");
-            String caminhoAbsoluto = "D:" + separador + "fotos_alunos" + separador + foto.getSubmittedFileName();
-         
             InputStream in = foto.getInputStream();
-            File f = new File(caminhoAbsoluto + foto.getSubmittedFileName());
-        
+            File f = new File("D:\\fotos_alunos\\" + foto.getSubmittedFileName());
+             
             f.createNewFile();
             FileOutputStream out = new FileOutputStream(f);
-          //  byte[] buffer = new byte[1024];
-             byte[] buffer = new byte[1024*1024*100];
 
-           
+            byte[] buffer = new byte[1024 * 1024 * 100];
+
             int length;
 
             while ((length = in.read(buffer)) > 0) {
@@ -155,14 +79,18 @@ public class AlunoMBean implements Serializable {
             }
             out.close();
             in.close();
+            
+            //Conteudo para a o campo foto da tabela aluno. Carrega uma string com o nome e extensao do ficheiro
             aluno.setFotoAluno(foto.getSubmittedFileName());
+            
+            //Conteudo em byte do ficheiro. Guarda o conteudo em bytes num campo da tabela.            
             byte[] content = IOUtils.toByteArray(foto.getInputStream());
             aluno.setConteudoFoto(content);
 
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
             uploaded = true;
 
-            FacesMessage msg = new FacesMessage("Ficheito", "\t\t" + f.getName() + "\t" + "\t" + "Carregado com sucesso");
+            FacesMessage msg = new FacesMessage("Ficheito", "\t\t" + f.getName() + "\t" + "\t" + "carregado com sucesso");
             FacesContext.getCurrentInstance().addMessage(null, msg);
 
         } catch (IOException ex) {
@@ -171,7 +99,6 @@ public class AlunoMBean implements Serializable {
 
     }
 
-    
     public void salvar() {
         alunoFacade.create(aluno);
         aluno = new Aluno();
@@ -180,8 +107,8 @@ public class AlunoMBean implements Serializable {
     }
 
     public List<Aluno> getAlunos() {
-        if (alunos == null) {
-            alunos = alunoFacade.findAll();
+        if(alunos== null){
+        alunos = alunoFacade.findAll();
         }
         return alunos;
     }
