@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Aluno.findByIdAluno", query = "SELECT a FROM Aluno a WHERE a.idAluno = :idAluno"),
     @NamedQuery(name = "Aluno.findByNomeAluno", query = "SELECT a FROM Aluno a WHERE a.nomeAluno = :nomeAluno"),
     @NamedQuery(name = "Aluno.findBySobrenomeAluno", query = "SELECT a FROM Aluno a WHERE a.sobrenomeAluno = :sobrenomeAluno"),
+    @NamedQuery(name = "Aluno.findByAlcunhaAluno", query = "SELECT a FROM Aluno a WHERE a.alcunhaAluno = :alcunhaAluno"),
     @NamedQuery(name = "Aluno.findByFotoAluno", query = "SELECT a FROM Aluno a WHERE a.fotoAluno = :fotoAluno")})
 public class Aluno implements Serializable {
 
@@ -50,6 +51,9 @@ public class Aluno implements Serializable {
     @Size(max = 45)
     @Column(name = "sobrenome_aluno")
     private String sobrenomeAluno;
+    @Size(max = 45)
+    @Column(name = "alcunha_aluno")
+    private String alcunhaAluno;
     @Size(max = 45)
     @Column(name = "foto_aluno")
     private String fotoAluno;
@@ -88,6 +92,14 @@ public class Aluno implements Serializable {
 
     public void setSobrenomeAluno(String sobrenomeAluno) {
         this.sobrenomeAluno = sobrenomeAluno;
+    }
+
+    public String getAlcunhaAluno() {
+        return alcunhaAluno;
+    }
+
+    public void setAlcunhaAluno(String alcunhaAluno) {
+        this.alcunhaAluno = alcunhaAluno;
     }
 
     public String getFotoAluno() {
