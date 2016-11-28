@@ -67,6 +67,14 @@ public class AlunoMBean implements Serializable {
             InputStream in = foto.getInputStream();
             File f = new File("D:\\fotos_alunos\\" + foto.getSubmittedFileName());
              
+            /*
+            PARA GUARDAR NUMA PASTA DENTRO DO PROJECTO BASTA FAZER
+            String path ="/fotos";
+            File f = new File(path);
+            if(!f.exists()){
+              f.mkdir();
+            }
+            */
             f.createNewFile();
             FileOutputStream out = new FileOutputStream(f);
 
