@@ -7,6 +7,7 @@ package mb;
 
 import entities.Aluno;
 import facade.AlunoFacade;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -22,6 +24,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -36,13 +40,18 @@ public class AlunoMBean implements Serializable {
      */
     private Part foto;
     private Aluno aluno = new Aluno();
-    private List<Aluno> alunos = new ArrayList<>();
+    private List<Aluno> alunos;
     private boolean carregado;
     private boolean uploaded;
     @EJB
     AlunoFacade alunoFacade;
 
     public AlunoMBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+        alunos = new ArrayList<>();
     }
 
     public Part getFoto() {
@@ -66,7 +75,7 @@ public class AlunoMBean implements Serializable {
 
             InputStream in = foto.getInputStream();
             File f = new File("D:\\fotos_alunos\\" + foto.getSubmittedFileName());
-             
+
             /*
             PARA GUARDAR NUMA PASTA DENTRO DO PROJECTO BASTA FAZER
             String path ="/fotos";
@@ -74,7 +83,7 @@ public class AlunoMBean implements Serializable {
             if(!f.exists()){
               f.mkdir();
             }
-            */
+             */
             f.createNewFile();
             FileOutputStream out = new FileOutputStream(f);
 
@@ -87,10 +96,10 @@ public class AlunoMBean implements Serializable {
             }
             out.close();
             in.close();
-            
+
             //Conteudo para a o campo foto da tabela aluno. Carrega uma string com o nome e extensao do ficheiro
             aluno.setFotoAluno(foto.getSubmittedFileName());
-            
+
             //Conteudo em byte do ficheiro. Guarda o conteudo em bytes num campo da tabela.            
             byte[] content = IOUtils.toByteArray(foto.getInputStream());
             aluno.setConteudoFoto(content);
@@ -107,6 +116,38 @@ public class AlunoMBean implements Serializable {
 
     }
 
+    public void fileUpload(FileUploadEvent event) {
+        try {
+
+            //Cria um objeto do tipo UploadedFile, para receber o ficheiro do evento
+            UploadedFile arq = event.getFile();
+
+            //transformar a imagem em bytes para guardar na base de dados  
+            byte[] foto = IOUtils.toByteArray(arq.getInputstream());
+
+            aluno.setConteudoFoto(foto);
+            aluno.setFotoAluno(arq.getFileName());
+
+            //para guardar o ficheiro num pasta local
+            InputStream in = new BufferedInputStream(arq.getInputstream());
+            File file = new File("D://fotos_alunos//" + arq.getFileName());
+
+          
+            FileOutputStream fout = new FileOutputStream(file);
+            while (in.available() != 0) {
+                fout.write(in.read());
+            }
+            fout.close();
+          
+            FacesMessage msg = new FacesMessage("Ficheiro:", arq.getFileName() + "Carregado com sucesso");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+
+        } catch (IOException ex) {
+            ex.printStackTrace(System.out);
+        }
+
+    }
+
     public void salvar() {
         alunoFacade.create(aluno);
         aluno = new Aluno();
@@ -115,9 +156,8 @@ public class AlunoMBean implements Serializable {
     }
 
     public List<Aluno> getAlunos() {
-        if(alunos== null){
+        System.out.println(">>>>>> Imprimir Lista <<<<<<<<");
         alunos = alunoFacade.findAll();
-        }
         return alunos;
     }
 
