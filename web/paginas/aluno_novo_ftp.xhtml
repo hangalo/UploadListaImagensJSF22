@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Registar novo aluno</title>
+    </h:head>
+    <h:body>
+        
+            
+            <f:view>
+
+
+                <h:form enctype="multipart/form-data">
+                    <h:messages showDetail="true" id="carregamento"/>
+                    <h1><h:outputText value="Registar Aluno"/></h1>
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="Nome:" for="nome" />
+                        <h:inputText id="nome" value="#{alunoMBean.aluno.nomeAluno}" title="Nome" />
+                        <h:panelGroup/>
+                        <h:outputLabel value="Sobrenome:" for="sobrenome" />
+                        <h:inputText id="sobrenome" value="#{alunoMBean.aluno.sobrenomeAluno}" title="Sobrenome" />
+                        <h:panelGroup/>
+                        
+                        <h:outputLabel value="Alcunha" for="alcunha" />
+                        <h:inputText id="alcunha" value="#{alunoMBean.aluno.alcunhaAluno}" title="alcunha" />
+                        <h:panelGroup/>
+                        <h:outputLabel value="Foto:" for="foto" />
+                        <h:inputFile id="foto" value="#{alunoMBean.foto}" title="Foto" />
+                        <h:commandButton value="Upload" actionListener="#{alunoMBean.ftpUpload()}"/>
+                        <h:panelGroup/>
+                        <h:commandButton value="Guardar" actionListener="#{alunoMBean.salvar}"/>
+                    </h:panelGrid>
+                </h:form>
+            </f:view>
+
+            
+        
+    </h:body>
+</html>
+

@@ -9,6 +9,7 @@ import entities.Aluno;
 import facade.AlunoFacade;
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +25,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -74,7 +77,10 @@ public class AlunoMBean implements Serializable {
         try {
 
             InputStream in = foto.getInputStream();
-            File f = new File("D:\\fotos_alunos\\" + foto.getSubmittedFileName());
+            
+            //File f = new File("D:\\fotos_alunos\\" + foto.getSubmittedFileName());
+            
+             File f = new File("\\\\192.168.0.4\\public\\" + foto.getSubmittedFileName());
 
             /*
             PARA GUARDAR NUMA PASTA DENTRO DO PROJECTO BASTA FAZER
@@ -163,6 +169,56 @@ public class AlunoMBean implements Serializable {
 
     public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
+    }
+    
+    
+     public  void ftpUpload() {
+        FTPClient client = new FTPClient();
+
+        FileInputStream fis = null;
+        try {
+
+            client.connect("192.168.0.13");
+            client.login("Admin", "Vpie.2014+");
+            client.enterLocalPassiveMode();
+            client.changeWorkingDirectory("/home");
+            System.out.println("Replay String" + client.getReplyString());
+            
+            int reply = client.getReplyCode();
+            
+          /*
+            
+              String filename = "d:/SQLiteJava.txt";
+            fis = new FileInputStream(filename);
+            */
+            
+            File file = new File("/home/"+foto.getSubmittedFileName());
+            String filename = file.getName();
+            
+            fis = new FileInputStream(filename);
+            
+            if (FTPReply.isPositiveCompletion(reply)) {
+                client.storeFile(filename, fis);
+            } else {
+                System.out.println("Can't upload to th FTP Server");
+
+            }
+            client.logout();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+
+            try {
+                if (client.isConnected()) {
+                    client.disconnect();
+//                    fis.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
 }
