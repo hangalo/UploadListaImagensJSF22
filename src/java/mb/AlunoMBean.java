@@ -80,6 +80,7 @@ public class AlunoMBean implements Serializable {
             
             //File f = new File("D:\\fotos_alunos\\" + foto.getSubmittedFileName());
             
+            //para guardar num disco de rede com IP
              File f = new File("\\\\192.168.0.4\\public\\" + foto.getSubmittedFileName());
 
             /*
